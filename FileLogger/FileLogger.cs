@@ -7,16 +7,10 @@ namespace FileLogger
     {
         public void Log(string message)
         {
-            var path = @"";
-            var prefix = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            using (StreamWriter sw = File.AppendText(path))
-            {
-                sw.Write(prefix + " " + message);
-            }
-        }
+            using var writer = File.AppendText("log.txt");
 
-        public File GetFileIfExists()
-        {
+            string dateString = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            writer.WriteLine($"{dateString} {message}");
         }
     }
 }
