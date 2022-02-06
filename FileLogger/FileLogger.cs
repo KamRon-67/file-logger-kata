@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace FileLogger
 {
@@ -7,8 +8,10 @@ namespace FileLogger
         public void Log(string message)
         {
             using var writer = File.AppendText("log.txt");
-            
-            writer.WriteLine(message);
+
+            string dateString = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+            writer.WriteLine($"{dateString} {message}");
         }
     }
 }
