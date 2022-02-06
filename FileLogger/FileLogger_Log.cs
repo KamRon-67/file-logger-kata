@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Xunit;
 
 namespace FileLogger
@@ -10,10 +11,11 @@ namespace FileLogger
         {
             var logger = new FileLogger();
             var msg = Guid.NewGuid().ToString();
-            
+            string dateString = DateTime.Today.ToString("yyyy-MM-dd");
+
             logger.Log(msg);
 
-            var fileContents = System.IO.File.ReadAllText("log.txt");
+            var fileContents = System.IO.File.ReadAllText($"log{dateString}.txt");
 
             Assert.Contains(msg, fileContents);
         }
@@ -27,7 +29,7 @@ namespace FileLogger
 
             logger.Log(msg);
 
-            var fileContents = System.IO.File.ReadAllText("log.txt");
+            var fileContents = System.IO.File.ReadAllText($"log{dateString}.txt");
 
             Assert.Contains(dateString, fileContents);
         }
