@@ -66,6 +66,23 @@ namespace FileLogger
             Assert.True(File.Exists(expectedfileName));
         }
 
+        [Theory]
+        [InlineData(2022, 2, 12)]
+        [InlineData(2022, 2, 13)]
+        public void LogsToWeekendFileOnWeekend(int year, int month, int day)
+        {
+            DateTime weekendDate = new DateTime(year, month, day);
+            
+            string expectedfileName = "weekend.txt";
+
+            var fakeDateTime = new FakeDateTime();
+
+            var logger = new FileLogger(fakeDateTime);
+            fakeDateTime.Now = weekendDate;
+
+            Assert.True(File.Exists(expectedfileName));
+        }
+
         public class FakeDateTime : IDateTime
         {
             public DateTime Now { get; set; } = DateTime.Now;
