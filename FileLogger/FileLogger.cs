@@ -23,16 +23,27 @@ namespace FileLogger
 
         public void Log(string message)
         {
-
-            var todayString = DateTime.Today.ToString("yyyy-MM-dd");
-
-            var fileName = $"log{todayString}.txt";
-
+            string fileName = GetFileName();
             using var writer = File.AppendText(fileName);
 
             string dateString = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
             writer.WriteLine($"{dateString} {message}");
+            writer.Close();
+        }
+
+        private string GetFileName()
+        {
+            if(_dateTime.Now.DayOfWeek == DayOfWeek.Sunday
+                ||
+                    _dateTime.Now.DayOfWeek == DayOfWeek.Saturday)
+                    {
+                return "weekend.txt";
+            }
+
+            var todayString = DateTime.Today.ToString("yyyy-MM-dd");
+
+            return $"log{todayString}.txt";
         }
     }
 }
