@@ -1,3 +1,4 @@
+using System;
 using Xunit;
 
 namespace FileLogger
@@ -5,9 +6,16 @@ namespace FileLogger
     public class FileLogger_Log
     {
         [Fact]
-        public void Test1()
+        public void AppendsMessageToLogFile()
         {
+            var logger = new FileLogger();
+            var msg = Guid.NewGuid().ToString();
+            
+            logger.Log(msg);
 
+            var fileContents = System.IO.File.ReadAllText("log.txt");
+
+            Assert.Contains(msg, fileContents);
         }
     }
 }
