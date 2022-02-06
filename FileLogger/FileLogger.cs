@@ -7,7 +7,12 @@ namespace FileLogger
     {
         public void Log(string message)
         {
-            using var writer = File.AppendText("log.txt");
+
+            var todayString = DateTime.Today.ToString("yyyy-MM-dd");
+
+            var fileName = $"log{todayString}.txt";
+
+            using var writer = File.AppendText(fileName);
 
             string dateString = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
