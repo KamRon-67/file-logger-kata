@@ -6,30 +6,33 @@ namespace FileLogger
 {
     public class FileLogger_Log
     {
+        private FileLogger _logger = new FileLogger();
+        private string _testMessage = Guid.NewGuid().ToString();
+        private string GetFileName()
+        {
+            string dateString = DateTime.Today.ToString("yyyy-MM-dd");
+
+            return $"log{dateString}.txt";
+        }
+
         [Fact]
         public void AppendsMessageToLogFile()
         {
-            var logger = new FileLogger();
-            var msg = Guid.NewGuid().ToString();
-            string dateString = DateTime.Today.ToString("yyyy-MM-dd");
+            _logger.Log(_testMessage);
 
-            logger.Log(msg);
+            var fileContents = File.ReadAllText(GetFileName());
 
-            var fileContents = System.IO.File.ReadAllText($"log{dateString}.txt");
-
-            Assert.Contains(msg, fileContents);
+            Assert.Contains(_testMessage, fileContents);
         }
 
         [Fact]
         public void AppendsMessageToLogFileWithCurrentTimePrefix()
         {
-            var logger = new FileLogger();
-            var msg = Guid.NewGuid().ToString();
             string dateString = DateTime.Today.ToString("yyyy-MM-dd");
 
-            logger.Log(msg);
+            _logger.Log(_testMessage);
 
-            var fileContents = System.IO.File.ReadAllText($"log{dateString}.txt");
+            var fileContents = File.ReadAllText(GetFileName());
 
             Assert.Contains(dateString, fileContents);
         }
@@ -37,18 +40,11 @@ namespace FileLogger
         [Fact]
         public void AppendsMessageToLogFileNameForToday()
         {
-            var logger = new FileLogger();
-            var msg = Guid.NewGuid().ToString();
-            string dateString = DateTime.Today.ToString("yyyy-MM-dd");
-            string expectedfileName = "log" + dateString + ".txt";
+            string expectedfileName = GetFileName();
 
-            logger.Log(msg);
+            _logger.Log(_testMessage);
 
-            var fileContents = System.IO.File.ReadAllText("log.txt");
-
-            Assert.Contains(dateString, fileContents);
-
-            Assert.True(File.Exists(expectedfileName));
+            Assert.True(File.Exists(GetFileName()));
         }
     }
 }
