@@ -79,6 +79,7 @@ namespace FileLogger
 
             var logger = new FileLogger(fakeDateTime);
             fakeDateTime.Now = weekendDate;
+            logger.Log("foo");
 
             Assert.True(File.Exists(expectedfileName));
         }
