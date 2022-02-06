@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using Xunit;
 
 namespace FileLogger
@@ -17,6 +16,20 @@ namespace FileLogger
             var fileContents = System.IO.File.ReadAllText("log.txt");
 
             Assert.Contains(msg, fileContents);
+        }
+
+        [Fact]
+        public void AppendsMessageToLogFileWithCurrentTimePrefix()
+        {
+            var logger = new FileLogger();
+            var msg = Guid.NewGuid().ToString();
+            string dateString = DateTime.Today.ToString("yyyy-MM-dd");
+
+            logger.Log(msg);
+
+            var fileContents = System.IO.File.ReadAllText("log.txt");
+
+            Assert.Contains(dateString, fileContents);
         }
 
         [Fact]
